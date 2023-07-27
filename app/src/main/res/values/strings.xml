@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Home Scout</string>
+    <string name="title_welcome">Welcome</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_scan">Scan</string>
+    <string name="description_title_welcome">Home Scout</string>
+    <string name="description_text_welcome">This app protects you from malicious
+        Bluetooth Low Energy trackers. It detects when such a tracker is following you.
+        Therefore, Bluetooth Low Energy (BLE) needs to be enabled and the app needs your
+        permission to scan for BLE devices.
+
+        Also you need to allow the app to use your location. This way the app can determine
+        if a tracker is following you.
+
+        Note, no data will be sent to any third party. The data collected from Bluetooth
+        and Location remains on your phone.</string>
+    <string name="grant_permission">Grant Permissions</string>
+    <string name="description_slider_distance">Distance</string>
+    <string name="description_slider_time_in_min">Time</string>
+    <string name="description_slider_occurrences">Occurrences</string>
+    <string name="text_button_delete_all">Delete All</string>
+    <string name="text_dialog_slider_distance">Determines how many meters a tracker at least needs to follow you before getting notified.</string>
+    <string name="text_dialog_slider_time_in_min">Determines how many minutes a tracker at least needs to follow you before getting notified.</string>
+    <string name="text_dialog_slider_occurrences">Determines how many times a tracker at least needs to be close to you before getting notified.</string>
+    <string name="text_default_settings">Apply default settings</string>
+    <string name="text_airguard_settings">apply airguard\'s settings</string>
+    <string name="text_apple_settings">Apply Apple\'s settings</string>
+    <string name="title_switch_tracking_protection">Tracking Protection</string>
+    <string name="subtext_switch_tracking_protection">Notifies about Bluetooth Low Energy trackers following you.</string>
+    <string name="scan_button_stop">Stop</string>
+    <string name="scan_button_scan">Scan</string>
+</resources>

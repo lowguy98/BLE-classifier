@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_welcome">
+
+    <action
+        android:id="@+id/action_global_settings_fragment"
+        app:destination="@id/navigation_settings"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/action_global_notifications_fragment"
+        app:destination="@id/navigation_notifications"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/navigation_welcome"
+        android:name="android.example.homescout.ui.welcome.WelcomeFragment"
+        android:label="@string/title_welcome"
+        tools:layout="@layout/fragment_welcome" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="android.example.homescout.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="android.example.homescout.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_scan"
+        android:name="android.example.homescout.ui.scan.ScanFragment"
+        android:label="@string/title_scan"
+        tools:layout="@layout/fragment_scan" />
+</navigation>

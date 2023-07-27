@@ -1,0 +1,8 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE `malicious_tracker_table` (`mac` TEXT NOT NULL, `timestampInMilliSeconds` INTEGER NOT NULL, `type` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT);
+INSERT INTO malicious_tracker_table VALUES('FA:E1:0B:F2:32:88',1669214346821,'AirTag',1);
+INSERT INTO malicious_tracker_table VALUES('C5:18:B9:19:3A:D8',1669214376898,'Chipolo ONE Spot',2);
+INSERT INTO malicious_tracker_table VALUES('7E:2A:73:52:47:B5',1669214407205,'Galaxy SmartTag+',3);
+INSERT INTO malicious_tracker_table VALUES('DB:EE:05:2C:9F:97',1669214437134,'Tile',4);
+COMMIT;

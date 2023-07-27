@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="settingsViewModel"
+            type="android.example.homescout.ui.settings.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.settings.SettingsFragment">
+
+
+        <ImageView
+            android:id="@+id/icon_tracking_protection"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_protect_48px"
+            android:paddingStart="@dimen/margin_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_switch_tracking_protection"
+            app:layout_constraintBottom_toBottomOf="@id/subtext_switch_tracking_protection"
+            android:clickable="true"
+            android:contentDescription="@string/text_dialog_slider_distance" />
+
+        <TextView
+            android:id="@+id/text_switch_tracking_protection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="@string/title_switch_tracking_protection"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/icon_tracking_protection" />
+
+        <TextView
+            android:id="@+id/subtext_switch_tracking_protection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:text="@string/subtext_switch_tracking_protection"
+            android:fontFamily="@font/roboto"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/text_switch_tracking_protection"
+            app:layout_constraintStart_toStartOf="@id/text_switch_tracking_protection"
+            app:layout_constraintEnd_toStartOf="@id/switch_tracking_protection"/>
+
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_tracking_protection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/margin_small"
+            android:text=""
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:textColor="@color/grey"
+            android:checked="@{settingsViewModel.isSwitchEnabled}"
+            app:layout_constraintTop_toTopOf="@id/text_switch_tracking_protection"
+            app:layout_constraintBottom_toBottomOf="@id/subtext_switch_tracking_protection"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            app:layout_constraintTop_toBottomOf="@id/subtext_switch_tracking_protection"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/slider_group"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_large"
+            app:layout_constraintTop_toBottomOf="@id/divider_settings"
+            app:layout_constraintBottom_toTopOf="@id/button_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_slider_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description_slider_distance"
+                android:fontFamily="@font/roboto"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/info_slider_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:src="@drawable/ic_info_20px"
+                app:layout_constraintStart_toEndOf="@id/text_slider_distance"
+                app:layout_constraintTop_toTopOf="@id/text_slider_distance"
+                app:layout_constraintBottom_toBottomOf="@id/text_slider_distance"
+                android:clickable="@{settingsViewModel.isSwitchEnabled}"
+                android:contentDescription="@string/text_dialog_slider_distance" />
+
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:value="200.0"
+                android:valueFrom="50.0"
+                android:valueTo="1000.0"
+                android:stepSize="50.0"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintTop_toBottomOf="@id/text_slider_distance" />
+
+
+            <TextView
+                android:id="@+id/text_slider_time_in_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/description_slider_time_in_min"
+                android:fontFamily="@font/roboto"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/slider_distance"
+                app:layout_constraintStart_toStartOf="@id/slider_distance" />
+
+            <ImageView
+                android:id="@+id/info_slider_time_in_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:src="@drawable/ic_info_20px"
+                app:layout_constraintStart_toEndOf="@id/text_slider_time_in_min"
+                app:layout_constraintTop_toTopOf="@id/text_slider_time_in_min"
+                app:layout_constraintBottom_toBottomOf="@id/text_slider_time_in_min"
+                android:clickable="@{settingsViewModel.isSwitchEnabled}"
+                android:contentDescription="@string/text_dialog_slider_time_in_min" />
+
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_time_in_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:value="1.0"
+                android:valueFrom="1.0"
+                android:valueTo="20.0"
+                android:stepSize="1.0"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintTop_toBottomOf="@id/text_slider_time_in_min" />
+
+            <TextView
+                android:id="@+id/text_slider_occurrences"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/description_slider_occurrences"
+                android:fontFamily="@font/roboto"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/slider_time_in_min"
+                app:layout_constraintStart_toStartOf="@id/slider_time_in_min" />
+
+            <ImageView
+                android:id="@+id/info_slider_occurrences"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:src="@drawable/ic_info_20px"
+                app:layout_constraintStart_toEndOf="@id/text_slider_occurrences"
+                app:layout_constraintTop_toTopOf="@id/text_slider_occurrences"
+                app:layout_constraintBottom_toBottomOf="@id/text_slider_occurrences"
+                android:clickable="@{settingsViewModel.isSwitchEnabled}"
+                android:contentDescription="@string/text_dialog_slider_occurrences" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_occurrences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:value="4.0"
+                android:valueFrom="2.0"
+                android:valueTo="10.0"
+                android:stepSize="1.0"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintTop_toBottomOf="@id/text_slider_occurrences" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_group"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_default_settings"
+                style="?attr/materialButtonOutlinedStyle"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintBottom_toTopOf="@id/button_air_guard" />
+
+            <Button
+                android:id="@+id/button_air_guard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_airguard_settings"
+                style="?attr/materialButtonOutlinedStyle"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintBottom_toTopOf="@id/button_apple" />
+
+
+            <Button
+                android:id="@+id/button_apple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text_apple_settings"
+                style="?attr/materialButtonOutlinedStyle"
+                android:enabled="@{settingsViewModel.isSwitchEnabled}"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
