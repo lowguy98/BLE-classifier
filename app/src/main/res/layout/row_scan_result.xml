@@ -36,6 +36,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="-100 dBm" />
 
+    <TextView
+        android:id="@+id/ble_classification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Device type: " />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

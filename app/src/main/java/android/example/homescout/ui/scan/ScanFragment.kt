@@ -20,6 +20,8 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,6 +50,8 @@ class ScanFragment : Fragment() {
     private val isBluetoothEnabled : Boolean
         get() = bluetoothAdapter.isEnabled
     private val scanResults = mutableListOf<ScanResult>()
+    private var classificationResult = "Unknown"
+
     private var isScanning = false
         set(value) {
             field = value
@@ -58,11 +62,11 @@ class ScanFragment : Fragment() {
             }
         }
 
-    private lateinit var tflite : Interpreter
-    private lateinit var tflitemodel : ByteBuffer
 
     // PROPERTIES lateinit
     private lateinit var scanSettings: ScanSettings
+    private lateinit var tflite : Interpreter
+    private lateinit var tflitemodel : ByteBuffer
 
     // PROPERTIES lazy
     private val bluetoothAdapter: BluetoothAdapter by lazy {
@@ -75,7 +79,7 @@ class ScanFragment : Fragment() {
     }
 
     private val scanResultAdapter: ScanResultAdapter by lazy {
-        ScanResultAdapter(scanResults) { result ->
+        ScanResultAdapter(scanResults, classificationResult) { result ->
             // User tapped on a scan result
             with(result.device) {
                 Snackbar.make(binding.root, "Tapped on: $address", Snackbar.LENGTH_LONG).show()
@@ -94,7 +98,6 @@ class ScanFragment : Fragment() {
         buildScanSettings()
         setOnClickListenerForScanButton()
         setupRecyclerView()
-
         val assets = context?.assets ?: throw Exception("Context or assets is null")
         try {
             tflitemodel = setupModel(assets,"model.tflite")
@@ -215,7 +218,7 @@ class ScanFragment : Fragment() {
             }
             println(scanRecord_hex)
 
-            doInference(scanRecord_hex)
+            classificationResult = doInference(scanRecord_hex)
             // this might needs to be changed as the device.address might change due to
             // MAC randomization
             // check if the current found result is already in the entire scanResult list
@@ -298,7 +301,7 @@ class ScanFragment : Fragment() {
         return String(hexChars)
     }
 
-    private fun doInference(hex_stream: String?) {
+    private fun doInference(hex_stream: String?): String {
         val features: List<Any>? = hex_stream?.let { featureExtraction(it) }
         // convert the extracted features into the appropriate format
         val inputData = ByteBuffer.allocateDirect(4 * 3) // assuming that there are 3 features and they are all floats
@@ -316,7 +319,14 @@ class ScanFragment : Fragment() {
 
         val outputData = Array(1) { FloatArray(3) } // assuming the model outputs 3 floats
         tflite.run(inputData, outputData)
-
+        // Find the label with the highest probability
+        val labels = listOf("health and fitness", "personal electronics", "tracker")
+        val maxIndex = outputData[0].indices.maxByOrNull { outputData[0][it] } ?: -1// Find the index of the maximum value
+        return if (maxIndex != -1) {
+            labels[maxIndex]
+        } else {
+            "Unknown"
+        }
     }
 
     fun featureExtraction(raw: String): List<Any> {

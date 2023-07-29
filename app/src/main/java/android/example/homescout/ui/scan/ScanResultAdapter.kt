@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ScanResultAdapter(
     private val items: List<ScanResult>,
+    private val classificationResult: String,
     private val onClickListener: ((device: ScanResult) -> Unit)
 ) : RecyclerView.Adapter<ScanResultAdapter.ViewHolder>() {
 
@@ -26,7 +27,7 @@ class ScanResultAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.bind(item)
+        holder.bind(item, classificationResult)
     }
 
     class ViewHolder(
@@ -37,14 +38,16 @@ class ScanResultAdapter(
         private val deviceType: TextView = view.findViewById(R.id.device_type)
         private val macAddress: TextView = view.findViewById(R.id.mac_address)
         private val signalStrength: TextView = view.findViewById(R.id.signal_strength)
+        private val classificationResult: TextView = view.findViewById(R.id.ble_classification)
 
 
         @SuppressLint("MissingPermission", "SetTextI18n")
-        fun bind(result: ScanResult) {
+        fun bind(result: ScanResult, classResult: String) {
             // display device device type, mac address and RSSI of ble device
             macAddress.text = result.device.address
             deviceType.text = DeviceTypeManager.identifyDeviceType(result).type
             signalStrength.text = "${result.rssi} dBm"
+            classificationResult.text = "Device type: $classResult"
 
             view.setOnClickListener { onClickListener.invoke(result) }
         }
