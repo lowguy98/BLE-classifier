@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ScanResultAdapter(
     private val items: List<ScanResult>,
-    private val classificationResult: String,
+    private val classificationResult: List<String>,
     private val onClickListener: ((device: ScanResult) -> Unit)
 ) : RecyclerView.Adapter<ScanResultAdapter.ViewHolder>() {
 
@@ -27,7 +27,8 @@ class ScanResultAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.bind(item, classificationResult)
+        val classItem = classificationResult[position]
+        holder.bind(item, classItem)
     }
 
     class ViewHolder(

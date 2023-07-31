@@ -50,7 +50,7 @@ class ScanFragment : Fragment() {
     private val isBluetoothEnabled : Boolean
         get() = bluetoothAdapter.isEnabled
     private val scanResults = mutableListOf<ScanResult>()
-    private var classificationResult = "Unknown"
+    private val classificationResults = mutableListOf<String>()
 
     private var isScanning = false
         set(value) {
@@ -79,7 +79,7 @@ class ScanFragment : Fragment() {
     }
 
     private val scanResultAdapter: ScanResultAdapter by lazy {
-        ScanResultAdapter(scanResults, classificationResult) { result ->
+        ScanResultAdapter(scanResults, classificationResults) { result ->
             // User tapped on a scan result
             with(result.device) {
                 Snackbar.make(binding.root, "Tapped on: $address", Snackbar.LENGTH_LONG).show()
@@ -218,7 +218,7 @@ class ScanFragment : Fragment() {
             }
             println(scanRecord_hex)
 
-            classificationResult = doInference(scanRecord_hex)
+            var inferResult = doInference(scanRecord_hex)
             // this might needs to be changed as the device.address might change due to
             // MAC randomization
             // check if the current found result is already in the entire scanResult list
@@ -226,12 +226,14 @@ class ScanFragment : Fragment() {
             // element not found returns -1
             if (indexQuery != -1) { // A scan result already exists with the same address
                 scanResults[indexQuery] = result
+                classificationResults[indexQuery] = inferResult
                 scanResultAdapter.notifyItemChanged(indexQuery)
             } else { // found new device
 //                with(result.device) {
 //                    //Timber.i( address: $address")
 //                }
                 scanResults.add(result)
+                classificationResults.add(inferResult)
                 scanResultAdapter.notifyItemInserted(scanResults.size - 1)
             }
         }
@@ -304,20 +306,18 @@ class ScanFragment : Fragment() {
     private fun doInference(hex_stream: String?): String {
         val features: List<Any>? = hex_stream?.let { featureExtraction(it) }
         // convert the extracted features into the appropriate format
-        val inputData = ByteBuffer.allocateDirect(4 * 3) // assuming that there are 3 features and they are all floats
+        var inputData = ByteBuffer.allocateDirect(4 * 3) // assuming that there are 3 features and they are all floats
         inputData.order(ByteOrder.nativeOrder()) // use the device's native byte order (either BIG_ENDIAN or LITTLE_ENDIAN)
 
         // add the features to the ByteBuffer
-        features?.forEach { feature ->
-            when (feature) {
-                is Int -> inputData.putInt(feature)
-                is Float -> inputData.putFloat(feature)
-                // add other types as needed
-            }
+        val scaledFeatures = scaleFeatures(features!!)
+        scaledFeatures.forEach { feature ->
+            inputData.putFloat(feature)  // 由于所有特征都是浮点数，可以直接使用putFloat
         }
+
         inputData.rewind()
 
-        val outputData = Array(1) { FloatArray(3) } // assuming the model outputs 3 floats
+        var outputData = Array(1) { FloatArray(3) } // assuming the model outputs 3 floats
         tflite.run(inputData, outputData)
         // Find the label with the highest probability
         val labels = listOf("health and fitness", "personal electronics", "tracker")
@@ -326,6 +326,20 @@ class ScanFragment : Fragment() {
             labels[maxIndex]
         } else {
             "Unknown"
+        }
+    }
+
+    private fun scaleFeatures(features: List<Any>): List<Float> {
+        // 这里是Python中获取的mean_和scale_的示例值
+        val mean = floatArrayOf(68.402435F, 2.7195122F, 0.5121951F)
+        val scale = floatArrayOf(20.386724F, 1.2569261F, 0.8729527F)
+
+        return features.mapIndexed { index, feature ->
+            when (feature) {
+                is Int -> ((feature - mean[index]) / scale[index]).toFloat()
+                is Float -> (feature - mean[index]) / scale[index]
+                else -> feature as Float  // 如果有其他数据类型，按需处理
+            }
         }
     }
 

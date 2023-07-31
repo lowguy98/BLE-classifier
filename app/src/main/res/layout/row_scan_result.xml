@@ -12,7 +12,7 @@
         android:id="@+id/device_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/mac_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/device_type"
         app:layout_constraintStart_toStartOf="@+id/device_type"
         tools:text="MAC: XX:XX:XX:XX:XX" />
@@ -31,7 +31,7 @@
         android:id="@+id/signal_strength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintTop_toTopOf="@+id/device_type"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="-100 dBm" />
@@ -40,10 +40,9 @@
         android:id="@+id/ble_classification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="4dp"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/device_type"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Device type: " />
 
 
