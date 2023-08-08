@@ -306,7 +306,7 @@ class ScanFragment : Fragment() {
     private fun doInference(hex_stream: String?): String {
         val features: List<Any>? = hex_stream?.let { featureExtraction(it) }
         // convert the extracted features into the appropriate format
-        var inputData = ByteBuffer.allocateDirect(4 * 3) // assuming that there are 3 features and they are all floats
+        var inputData = ByteBuffer.allocateDirect(4 * 5) // there are 5 features and they are all floats
         inputData.order(ByteOrder.nativeOrder()) // use the device's native byte order (either BIG_ENDIAN or LITTLE_ENDIAN)
 
         // add the features to the ByteBuffer
@@ -317,10 +317,10 @@ class ScanFragment : Fragment() {
 
         inputData.rewind()
 
-        var outputData = Array(1) { FloatArray(3) } // assuming the model outputs 3 floats
+        var outputData = Array(1) { FloatArray(2) } // the model outputs 2 floats
         tflite.run(inputData, outputData)
         // Find the label with the highest probability
-        val labels = listOf("health and fitness", "personal electronics", "tracker")
+        val labels = listOf("Non-tracker", "Tracker")
         val maxIndex = outputData[0].indices.maxByOrNull { outputData[0][it] } ?: -1// Find the index of the maximum value
         return if (maxIndex != -1) {
             labels[maxIndex]
@@ -331,8 +331,8 @@ class ScanFragment : Fragment() {
 
     private fun scaleFeatures(features: List<Any>): List<Float> {
         // 这里是Python中获取的mean_和scale_的示例值
-        val mean = floatArrayOf(68.402435F, 2.7195122F, 0.5121951F)
-        val scale = floatArrayOf(20.386724F, 1.2569261F, 0.8729527F)
+        val mean = floatArrayOf(67.15546F, 2.63235F, 0.30042F, 0.14600F, 0.55357F)
+        val scale = floatArrayOf(20.13277F, 1.15651F, 0.45844F, 0.35311F, 0.49712F)
 
         return features.mapIndexed { index, feature ->
             when (feature) {
@@ -347,7 +347,7 @@ class ScanFragment : Fragment() {
         var i = 0
         var adCnt = 0
         var manufacturerOrService = 0
-        var bluetoothSupported = 2
+        var bluetoothSupported = "unknown"
         val typeList = mutableListOf<String>()
         val adStruct = mutableMapOf<String, String>()
         val adLenList = mutableListOf<Int>()
@@ -357,6 +357,9 @@ class ScanFragment : Fragment() {
             if (length == 0) break
             val type = raw.substring(i + 2, i + 4)
             val data = raw.substring(i + 4, i + length * 2 + 2)
+            if (type == "00") {
+                break
+            }
             adCnt += 1
             typeList.add(type)
             adStruct[type] = data
@@ -364,12 +367,15 @@ class ScanFragment : Fragment() {
             when (type) {
                 "16", "ff" -> manufacturerOrService = 1
                 "01" -> {
-                    val binaryStr = Integer.toBinaryString(0x1a).padStart(8, '0')
-                    bluetoothSupported = if (binaryStr[5] == '0') 1 else 0
+                    val binaryStr = Integer.toBinaryString(data.toInt(16)).padStart(8, '0')
+                    bluetoothSupported = if (binaryStr[binaryStr.length - 3] == '0') "yes" else "no"
                 }
             }
             i += length * 2 + 2
         }
-        return listOf(i, adCnt, bluetoothSupported)
+
+        return listOf(i, adCnt, if (bluetoothSupported == "unknown") 1.0f else 0.0f,
+            if (bluetoothSupported == "yes") 1.0f else 0.0f,
+            if (bluetoothSupported == "no") 1.0f else 0.0f)
     }
 }

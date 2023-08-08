@@ -9,7 +9,7 @@
     android:background="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/device_type"
+        android:id="@+id/ble_classification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/device_type"
+        app:layout_constraintTop_toBottomOf="@id/ble_classification"
         app:layout_constraintStart_toStartOf="@+id/device_type"
         tools:text="MAC: XX:XX:XX:XX:XX" />
 
@@ -32,18 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        app:layout_constraintTop_toTopOf="@+id/device_type"
+        app:layout_constraintTop_toTopOf="@+id/ble_classification"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="-100 dBm" />
-
-    <TextView
-        android:id="@+id/ble_classification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@+id/device_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Device type: " />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

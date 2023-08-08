@@ -36,7 +36,7 @@ class ScanResultAdapter(
         private val onClickListener: ((device: ScanResult) -> Unit)
     ) : RecyclerView.ViewHolder(view) {
 
-        private val deviceType: TextView = view.findViewById(R.id.device_type)
+//        private val deviceType: TextView = view.findViewById(R.id.device_type)
         private val macAddress: TextView = view.findViewById(R.id.mac_address)
         private val signalStrength: TextView = view.findViewById(R.id.signal_strength)
         private val classificationResult: TextView = view.findViewById(R.id.ble_classification)
@@ -46,10 +46,10 @@ class ScanResultAdapter(
         fun bind(result: ScanResult, classResult: String) {
             // display device device type, mac address and RSSI of ble device
             macAddress.text = result.device.address
-            deviceType.text = DeviceTypeManager.identifyDeviceType(result).type
+//            deviceType.text = DeviceTypeManager.identifyDeviceType(result).type
             signalStrength.text = "${result.rssi} dBm"
-            classificationResult.text = "Device type: $classResult"
-
+//            classificationResult.text = "Device type: $classResult"
+            classificationResult.text = "$classResult"
             view.setOnClickListener { onClickListener.invoke(result) }
         }
     }
