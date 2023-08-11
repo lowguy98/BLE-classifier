@@ -1,9 +1,0 @@
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
-CREATE TABLE `malicious_tracker_table` (`mac` TEXT NOT NULL, `timestampInMilliSeconds` INTEGER NOT NULL, `type` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT);
-INSERT INTO malicious_tracker_table VALUES('C4:7A:C4:66:D6:27',1669220000331,'Chipolo ONE Spot',1);
-INSERT INTO malicious_tracker_table VALUES('4A:B1:38:A8:83:B2',1669220088570,'AirTag',2);
-INSERT INTO malicious_tracker_table VALUES('C7:4D:82:B7:F1:5C',1669220092295,'AppleDevice',3);
-INSERT INTO malicious_tracker_table VALUES('DB:EE:05:2C:9F:97',1669220122165,'Tile',4);
-INSERT INTO malicious_tracker_table VALUES('CE:14:77:BA:8D:C2',1669220152686,'AirTag',5);
-COMMIT;
